@@ -24,13 +24,18 @@ import pprint
 import sys
 import numpy as np
 import six
-
+import cv2
 import deepmind_lab
 
 
 def run(level_script, config, num_episodes):
   """Construct and start the environment."""
-  env = deepmind_lab.Lab(level_script, ['RGB_INTERLEAVED'], config)
+  config = {
+      'fps': str(60),
+      'width': str(240*4),
+      'height': str(180*4)
+  }
+  env = deepmind_lab.Lab(level_script, ['VEL.TRANS', 'VEL.ROT', 'RGB_INTERLEAVED'], config)
   env.reset()
 
   observation_spec = env.observation_spec()
@@ -55,11 +60,13 @@ def run(level_script, config, num_episodes):
     while env.is_running():
       # Advance the environment 4 frames while executing the action.
       reward = env.step(action, num_steps=4)
+      obs = env.observations()
 
       if reward != 0:
         score += reward
         print('Score =', score)
         sys.stdout.flush()
+
 
 
 if __name__ == '__main__':

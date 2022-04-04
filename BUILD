@@ -1042,7 +1042,20 @@ py_library(
         "@six_archive//:six",
     ],
 )
-
+py_binary(
+    name = "human",
+    srcs = ["python/human.py"],
+    main = "python/human.py",
+    deps=[":python_human_agent_lib"],
+)
+py_library(
+    name = "python_human_agent_lib",
+    srcs = ["python/human.py"],
+    data = [":deepmind_lab.so"],
+    visibility = ["//python/tests:__subpackages__"],
+    deps = ["@six_archive//:six"],
+)
+"""
 py_binary(
     name = "python_random_agent",
     srcs = ["python/random_agent.py"],
@@ -1057,6 +1070,7 @@ py_library(
     visibility = ["//python/tests:__subpackages__"],
     deps = ["@six_archive//:six"],
 )
+"""
 
 LOAD_TEST_SCRIPTS = [
     level_script[len("game_scripts/levels/"):-len(".lua")]
